@@ -39,12 +39,11 @@ public class MyPageController {
     @PostMapping(path = "/mypage", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public BaseResponse<MyPageDto> uploadImage(
             //@RequestBody Long id,
-            @RequestPart(value = "fileName") String fileName,
             @RequestPart(value = "file", required = false) MultipartFile multipartFile)
             throws IOException {
         Long id = 1L;
 
-        myPageService.updateImage(id, fileName, multipartFile);
+        myPageService.updateImage(id, multipartFile);
 
         return new BaseResponse<>(myPageService.getMyPage(id));
     }

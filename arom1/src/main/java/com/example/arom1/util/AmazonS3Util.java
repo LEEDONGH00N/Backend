@@ -2,6 +2,8 @@ package com.example.arom1.util;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.*;
+import com.example.arom1.common.exception.BaseException;
+import com.example.arom1.common.response.BaseResponseStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,14 +32,16 @@ public class AmazonS3Util {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    private final String DIR_NAME = "pet_picture";
+    private final String DIR_NAME = "image";
 
-    public String uploadFile(String fileName, MultipartFile multipartFile, String extend) throws IOException {
-        // dirName의 디렉토리가 S3 Bucket 내부에 생성됨
+    public String uploadFile(MultipartFile multipartFile, String extend) throws IOException {
+
+        //private 메서드 convert
         File uploadFile = convert(multipartFile)
-                .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File 전환 실패"));
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.FAIL_IMAGE_CONVERT));
 
-        String newFileName = DIR_NAME + "/" + fileName+extend;
+        String newFileName = DIR_NAME + "/" + multipartFile.getOriginalFilename() + extend;
+
         String uploadImageUrl = putS3(uploadFile, newFileName);
 
         // convert()함수로 인해서 로컬에 생성된 File 삭제 (MultipartFile -> File 전환 하며 로컬에 파일 생성됨)
@@ -52,7 +56,8 @@ public class AmazonS3Util {
     }
     private Optional<File> convert(MultipartFile file) throws IOException {
         log.info(file.getOriginalFilename());
-        File convertFile = new File(file.getOriginalFilename()); // 업로드한 파일의 이름
+        File convertFile = new File(file.getOriginalFilename());
+
         if(convertFile.createNewFile()) {
             try (FileOutputStream fos = new FileOutputStream(convertFile)) {
                 fos.write(file.getBytes());
@@ -74,11 +79,14 @@ public class AmazonS3Util {
     public void deleteFile(String fileName){
         amazonS3.deleteObject(new DeleteObjectRequest(bucket, fileName));
     }
+
+    //URL 반환
     public String getUrl(String fileName) {
         return amazonS3.getUrl(bucket, fileName).toString();
     }
 
 
+    //파일 다운로드
     public ResponseEntity<byte[]> download(String fileName) throws IOException {
         S3Object awsS3Object = amazonS3.getObject(new GetObjectRequest(bucket, DIR_NAME + "/" + fileName));
         S3ObjectInputStream s3is = awsS3Object.getObjectContent();

@@ -21,6 +21,7 @@ public enum BaseResponseStatus {
     HTTP_METHOD_ERROR(false, HttpStatus.FORBIDDEN.value(), "http 메서드가 올바르지 않습니다."),
     NO_EATERY_BY_KEYWORD(false, HttpStatus.NO_CONTENT.value(), "검색어로 된 음식점이 없습니다."),
     NO_EATERY_BY_ADDRESS(false, HttpStatus.NO_CONTENT.value(), "주변에 음식점이 없습니다."),
+
     NO_IMAGE_BY_URL(false, HttpStatus.NO_CONTENT.value(), "해당 URL 이미지가 없습니다."),
 
     FAIL_REVIEW_POST(false, HttpStatus.INTERNAL_SERVER_ERROR.value(), "리뷰 작성에 실패했습니다."),
@@ -28,11 +29,12 @@ public enum BaseResponseStatus {
     INVALID_EATERY(false, HttpStatus.NOT_FOUND.value(), "유효하지 않은 음식점입니다."),
     NO_REVIEW_EXIST(false, HttpStatus.NO_CONTENT.value(), "존재하지 않는 리뷰입니다."),
     INVALID_MEETING(false, HttpStatus.NO_CONTENT.value(), "존재하지 않는 게시글입니다."),
-
     INVALID_CHATROOM(false, HttpStatus.NOT_FOUND.value(), "유효하지 않은 채팅방입니다."),
 
     // 5xx : server error
-    DATABASE_INSERT_ERROR(false, HttpStatus.INTERNAL_SERVER_ERROR.value(), "데이터베이스 입력에 실패했습니다.");
+    DATABASE_INSERT_ERROR(false, HttpStatus.INTERNAL_SERVER_ERROR.value(), "데이터베이스 입력에 실패했습니다."),
+
+    FAIL_IMAGE_CONVERT(false, HttpStatus.INTERNAL_SERVER_ERROR.value(), "Multipart 파일 전환에 실패했습니다.");
 
     private final boolean isSuccess;
     private final int code;
