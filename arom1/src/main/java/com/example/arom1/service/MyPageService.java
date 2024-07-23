@@ -8,12 +8,14 @@ import com.example.arom1.entity.Image;
 import com.example.arom1.entity.Member;
 import com.example.arom1.repository.ImageRepository;
 import com.example.arom1.repository.MemberRepository;
-import com.example.arom1.util.AmazonS3Util;
+import com.example.arom1.common.util.AmazonS3Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MyPageService {
@@ -33,9 +35,7 @@ public class MyPageService {
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.NON_EXIST_USER));
 
         return MyPageDto.toMyPageDto(member);
-
     }
-
 
     // 내 정보 업데이트
     public MyPageDto updateById(Long id, MyPageDto myPageDto) {
@@ -50,13 +50,24 @@ public class MyPageService {
     }
 
 
-    //이미지 업로드
-    public void updateImage(Long id, String fileName, MultipartFile multipartFile) throws IOException {
+    // ---------------- 이미지 기능 ---------------------
+    //이미지 리스트 가져오기
+    public List<String> getImages(Long id) throws BaseException {
+        Member currentMember = memberRepository.findById(id)
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.NON_EXIST_USER));
+
+        return currentMember.getImages().stream()
+                .map(Image::getUrl)
+                .collect(Collectors.toList());
+    }
+
+
+    // 이미지 업로드
+    public void updateImage(Long id, MultipartFile multipartFile) throws IOException {
         Member updatedMember = memberRepository.findById(id)
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.NON_EXIST_USER));
 
-        String extend = multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf("."));
-        String url = amazonS3Util.uploadFile(fileName,multipartFile,extend);
+        String url = amazonS3Util.uploadFile(multipartFile);
 
         Image newImage = Image.builder()
                 .url(url)
@@ -66,16 +77,18 @@ public class MyPageService {
         updatedMember.uploadImage(newImage);
         imageRepository.save(newImage);
     }
+
     //이미지 삭제
-    public void deleteImage(Long id, String fileName) {
+    public void deleteImage(Long id, String filename) {
         Member updatedMember = memberRepository.findById(id)
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.NON_EXIST_USER));
 
         Image image = imageRepository.findByUrl(
-                        amazonS3Util.getUrl(fileName))
+                amazonS3Util.getUrl(filename))
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.NO_IMAGE_BY_URL));
 
-        amazonS3Util.deleteFile(fileName);
+        amazonS3Util.deleteFile(filename);
+
         updatedMember.removeImage(image);
         imageRepository.delete(image);
     }
