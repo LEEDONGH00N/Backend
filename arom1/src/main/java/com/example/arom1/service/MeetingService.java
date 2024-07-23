@@ -75,14 +75,8 @@ public class MeetingService {
         if (!existingMeeting.getMember().getId().equals(memberId)) {
             throw new BaseException(BaseResponseStatus.INVALID_MEMBER);
         }
-        // 관련된 모든 채팅방 삭제
-        List<ChatRoom> chatRooms = existingMeeting.getChatRooms();
-        if (chatRooms != null && !chatRooms.isEmpty()) {
-            chatRoomRepository.deleteAll(chatRooms);
-        }
 
         meetingRepository.delete(existingMeeting);
-
     }
 
     //음식점 식사 메이트 구하는 글 수정

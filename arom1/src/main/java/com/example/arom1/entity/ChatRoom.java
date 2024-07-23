@@ -6,6 +6,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +38,7 @@ public class ChatRoom extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "meeting_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Meeting meeting;
 
     @Builder
@@ -47,5 +50,8 @@ public class ChatRoom extends BaseEntity {
         this.meeting=  meeting;
     }
 
+    public void setMeeting(Meeting meeting){
+        this.meeting = meeting;
+    }
 
 }

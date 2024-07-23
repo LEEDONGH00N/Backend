@@ -9,6 +9,7 @@ import com.example.arom1.dto.ReviewDto;
 import com.example.arom1.dto.response.MeetingResponse;
 import com.example.arom1.dto.response.ReviewResponse;
 import com.example.arom1.entity.Meeting;
+import com.example.arom1.entity.MemberDetail;
 import com.example.arom1.entity.Review;
 import com.example.arom1.repository.MeetingRepository;
 import com.example.arom1.service.MeetingService;
@@ -78,9 +79,9 @@ public class MeetingController {
 
     //삭제
     @DeleteMapping("/{eateryId}/meetings/{meetingId}")
-    public BaseResponse<?> deleteMeeting(@PathVariable Long eateryId,@PathVariable Long meetingId, @RequestParam Long memberId){
+    public BaseResponse<?> deleteMeeting(@PathVariable Long eateryId, @PathVariable Long meetingId, @RequestBody MeetingDto meetingDto ){
         try{
-            meetingService.deleteMeeting(meetingId, memberId);
+            meetingService.deleteMeeting(meetingId, meetingDto.getMember_id());
             return new BaseResponse<>(BaseResponseStatus.SUCCESS);
         }
         catch (BaseException e){

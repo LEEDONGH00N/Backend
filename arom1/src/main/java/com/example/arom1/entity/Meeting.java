@@ -40,7 +40,7 @@ public class Meeting extends BaseEntity {
 //    @OneToMany(mappedBy = "meeting")
 //    private List<MeetingReply> replies = new ArrayList<>();
 
-    @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "meeting", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<ChatRoom> chatRooms = new ArrayList<>();
 
     @Builder
