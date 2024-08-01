@@ -19,7 +19,7 @@ public class MemberDetail implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("member"));
     }
-
+    public Long getId() { return member.getId(); }
 
     @Override
     public String getUsername() {

@@ -1,17 +1,17 @@
-package com.example.arom1.common.config.jwt;
+package com.example.arom1.common.util.jwt;
 
-import com.example.arom1.entity.Member;
+import com.example.arom1.entity.MemberDetail;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Set;
@@ -21,30 +21,23 @@ import java.util.Set;
 public class TokenProvider {
     private final JwtProperties jwtProperties;
 
-    public String generateToken(Member member, Duration expiredAt) {
-        Date now = new Date();
-
-        return makeToken(new Date(now.getTime() + expiredAt.toMillis()), member);
-    }
-
-
     // 1. JWT 토큰 생성 메서드
-    private String makeToken(Date expiry, Member member) {
+    public String generateToken(MemberDetail memberDetail) {
         Date now = new Date();
 
         return Jwts.builder()
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
                 .setIssuer(jwtProperties.getIssuer())
                 .setIssuedAt(now)
-                .setExpiration(expiry)
-                .setSubject(member.getEmail())
-                .claim("id", member.getId())
+                .setExpiration(new Date(now.getTime() + jwtProperties.getExpiredAt().toMillis()))
+                .setSubject(memberDetail.getUsername())
+                .claim("id", memberDetail.getId())
                 .signWith(SignatureAlgorithm.HS256, jwtProperties.getSecretKey())
                 .compact();
     }
 
     // 2. JWT 토큰 유효성 검증 메서드
-    public boolean validToken(String token) {
+    public boolean validateToken(String token) {
         try {
             Jwts.parser()
                     .setSigningKey(jwtProperties.getSecretKey()) // 비밀값으로 복호화
@@ -78,4 +71,14 @@ public class TokenProvider {
                 .parseClaimsJws(token)
                 .getBody();
     }
+    //request에서 토큰 가져오는 메서드
+    public String resolveToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+        if (bearerToken != null && bearerToken.startsWith("Bearer")) {
+            return bearerToken.substring(7);
+        }
+        return null;
+    }
+
+
 }

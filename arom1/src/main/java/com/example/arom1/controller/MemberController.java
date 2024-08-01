@@ -1,5 +1,7 @@
 package com.example.arom1.controller;
 
+import com.example.arom1.common.exception.BaseException;
+import com.example.arom1.common.response.BaseResponse;
 import com.example.arom1.dto.MemberDto;
 import com.example.arom1.entity.Member;
 import com.example.arom1.service.MemberService;
@@ -22,14 +24,15 @@ public class MemberController {
     private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/signup")
-    public String signup(@RequestBody MemberDto request) {
-        Member member = Member.createMember(request, passwordEncoder);
-
-        memberService.saveMember(member);
-
-        return "redirect:/login";
+    public BaseResponse<MemberDto> signup(@RequestBody MemberDto request) {
+        try {
+            Member member = Member.createMember(request, passwordEncoder);
+            memberService.saveMember(member);
+        } catch (BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
+        return new BaseResponse<>(request);
     }
-
     @GetMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
         new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());
