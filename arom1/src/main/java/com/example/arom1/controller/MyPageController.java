@@ -18,7 +18,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MyPageController {
 
-    @Autowired
     private final MyPageService myPageService;
 
     //내 정보 불러오기
