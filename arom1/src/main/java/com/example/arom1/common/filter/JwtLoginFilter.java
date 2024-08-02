@@ -3,7 +3,7 @@ package com.example.arom1.common.filter;
 import com.example.arom1.common.exception.BaseException;
 import com.example.arom1.common.response.BaseResponseStatus;
 import com.example.arom1.common.util.jwt.TokenProvider;
-import com.example.arom1.dto.LoginDto;
+import com.example.arom1.dto.request.LoginRequest;
 import com.example.arom1.entity.MemberDetail;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
@@ -16,9 +16,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+@Component
 @RequiredArgsConstructor
 public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
@@ -29,9 +31,9 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
         System.out.println("LoginFilter 인증 : 진입");
 
         ObjectMapper objectMapper = new ObjectMapper();
-        LoginDto loginDto = null;
+        LoginRequest loginDto = null;
         try {
-            loginDto = objectMapper.readValue(request.getInputStream(), LoginDto.class);
+            loginDto = objectMapper.readValue(request.getInputStream(), LoginRequest.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
