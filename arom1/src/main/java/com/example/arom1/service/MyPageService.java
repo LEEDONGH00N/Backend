@@ -3,7 +3,7 @@ package com.example.arom1.service;
 
 import com.example.arom1.common.exception.BaseException;
 import com.example.arom1.common.response.BaseResponseStatus;
-import com.example.arom1.dto.MyPageDto;
+import com.example.arom1.dto.response.MyPageDto;
 import com.example.arom1.entity.Image;
 import com.example.arom1.entity.Member;
 import com.example.arom1.repository.ImageRepository;
