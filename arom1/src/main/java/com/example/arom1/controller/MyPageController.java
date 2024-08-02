@@ -3,11 +3,12 @@ package com.example.arom1.controller;
 
 import com.example.arom1.common.exception.BaseException;
 import com.example.arom1.common.response.BaseResponse;
-import com.example.arom1.dto.MyPageDto;
+import com.example.arom1.dto.response.MyPageDto;
+import com.example.arom1.entity.MemberDetail;
 import com.example.arom1.service.MyPageService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,7 +23,7 @@ public class MyPageController {
 
     //내 정보 불러오기
     @GetMapping("/mypage")
-    public BaseResponse<MyPageDto> getMyPage() {
+    public BaseResponse<MyPageDto> getMyPage(@AuthenticationPrincipal MemberDetail memberDetail) {
         Long id = 1L;
         try {
             return new BaseResponse<>(myPageService.getMyPage(id));
@@ -33,7 +34,7 @@ public class MyPageController {
 
     //내 정보 수정하기
     @PutMapping("/mypage")
-    public BaseResponse<MyPageDto> updateMyPage(@RequestBody MyPageDto myPageDto) {
+    public BaseResponse<MyPageDto> updateMyPage(@RequestBody MyPageDto myPageDto, @AuthenticationPrincipal MemberDetail memberDetail) {
         Long id = 1L;
         try {
             return new BaseResponse<>(myPageService.updateById(id, myPageDto));
@@ -44,7 +45,7 @@ public class MyPageController {
 
     //이미지 리스트 가져오기
     @GetMapping("/mypage/images")
-    public BaseResponse<List<String>> getImages() {
+    public BaseResponse<List<String>> getImages(@AuthenticationPrincipal MemberDetail memberDetail) {
         Long id = 1L;
         try {
             return new BaseResponse<>(myPageService.getImages(id));
@@ -57,7 +58,7 @@ public class MyPageController {
     //이미지 업로드하기
     @PostMapping(path = "/mypage/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public BaseResponse<List<String>> uploadImage(
-            @RequestPart(value = "file", required = false) MultipartFile multipartFile)
+            @RequestPart(value = "file", required = false) MultipartFile multipartFile, @AuthenticationPrincipal MemberDetail memberDetail)
             throws IOException {
         Long id = 1L;
         try {
@@ -71,7 +72,7 @@ public class MyPageController {
 
     //이미지 삭제하기
     @DeleteMapping(path = "/mypage/images")
-    public BaseResponse<List<String>> deleteImage(@RequestParam String filename) {
+    public BaseResponse<List<String>> deleteImage(@RequestParam String filename, @AuthenticationPrincipal MemberDetail memberDetail) {
         Long id = 1L;
         try {
             myPageService.deleteImage(id, filename);
