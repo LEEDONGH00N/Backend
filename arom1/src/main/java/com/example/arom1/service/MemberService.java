@@ -2,9 +2,12 @@ package com.example.arom1.service;
 
 import com.example.arom1.common.exception.BaseException;
 import com.example.arom1.common.response.BaseResponseStatus;
+import com.example.arom1.dto.request.SignupRequest;
+import com.example.arom1.dto.response.SignupResponse;
 import com.example.arom1.entity.Member;
 import com.example.arom1.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -14,8 +17,11 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public Member saveMember(Member member) {
+    public Member saveMember(SignupRequest request) {
+        Member member = Member.createMember(request, passwordEncoder);
+
         validateDuplicateMember(member);
 
         return memberRepository.save(member);
@@ -27,4 +33,6 @@ public class MemberService {
             throw new BaseException(BaseResponseStatus.EXIST_EMAIL);
         }
     }
+
+
 }
