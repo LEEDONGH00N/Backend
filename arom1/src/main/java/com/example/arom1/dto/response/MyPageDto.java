@@ -1,6 +1,5 @@
-package com.example.arom1.dto;
+package com.example.arom1.dto.response;
 
-import com.example.arom1.entity.Image;
 import com.example.arom1.entity.Member;
 import lombok.Builder;
 import lombok.Getter;

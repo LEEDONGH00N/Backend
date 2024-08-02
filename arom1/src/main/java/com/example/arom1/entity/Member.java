@@ -1,21 +1,17 @@
 package com.example.arom1.entity;
 
-import com.example.arom1.dto.MemberDto;
-import com.example.arom1.dto.MyPageDto;
+import com.example.arom1.dto.response.MyPageDto;
+import com.example.arom1.dto.request.SignupRequest;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Getter
@@ -88,7 +84,7 @@ public class Member extends BaseEntity {
     }
 
 
-    public static Member createMember(MemberDto dto, PasswordEncoder passwordEncoder) {
+    public static Member createMember(SignupRequest dto, PasswordEncoder passwordEncoder) {
         Member member = Member.builder()
                 .email(dto.getEmail())
                 .password(passwordEncoder.encode(dto.getPassword()))  //암호화처리
