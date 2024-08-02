@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +27,7 @@ public class MemberController {
     public BaseResponse<SignupResponse> signup(@RequestBody SignupRequest request,
                                                  BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
-            bindingResult.getFieldError()
+            bindingResult.getAllErrors().forEach(error -> System.out.println(error.getDefaultMessage()));
         }
 
         try {
