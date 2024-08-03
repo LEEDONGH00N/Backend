@@ -3,9 +3,9 @@ package com.example.arom1.dto.response;
 
 import com.example.arom1.entity.Member;
 import lombok.Builder;
+import lombok.Getter;
 
-import java.util.List;
-
+@Getter
 public class SignupResponse {
     private Long id;
     private String email;
@@ -15,10 +15,9 @@ public class SignupResponse {
     private int age;
     private String nickname;
 
-    private List<String> errorMessages;
 
     @Builder
-    private SignupResponse(Long id, String email, String password, String name, String introduction, int age, String nickname, List<String> errorMessages) {
+    private SignupResponse(Long id, String email, String password, String name, String introduction, int age, String nickname) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -26,7 +25,6 @@ public class SignupResponse {
         this.introduction = introduction;
         this.age = age;
         this.nickname = nickname;
-        this.errorMessages = errorMessages;
     }
 
     public static SignupResponse MemberToSignupResponse(Member member) {
@@ -42,10 +40,5 @@ public class SignupResponse {
                 .build();
     }
 
-    public static SignupResponse ErrorMessagesToSignupResponse(List<String> errorMessages) {
-        return SignupResponse.builder()
-                .errorMessages(errorMessages)
-                .build();
-    }
 
 }
