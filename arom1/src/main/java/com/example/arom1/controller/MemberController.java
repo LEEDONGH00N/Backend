@@ -4,6 +4,7 @@ import com.example.arom1.common.exception.BaseException;
 import com.example.arom1.common.response.BaseResponse;
 import com.example.arom1.dto.request.LoginRequest;
 import com.example.arom1.dto.request.SignupRequest;
+import com.example.arom1.dto.response.LoginResponse;
 import com.example.arom1.dto.response.SignupResponse;
 import com.example.arom1.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,8 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,11 +43,17 @@ public class MemberController {
         }
     }
     @PostMapping("/login")
-    public String login() {
-        System.out.println("Hello");
-
-        return "redirect:/login";
+    public BaseResponse<String> login() {
+        try {
+            System.out.println("Hello");
+        }
+        catch(BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
+        return new BaseResponse<>("Success");
+        //return "redirect:/login";
     }
+
     @GetMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
         new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());

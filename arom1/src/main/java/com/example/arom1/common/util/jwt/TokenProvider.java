@@ -1,6 +1,7 @@
 package com.example.arom1.common.util.jwt;
 
 import com.example.arom1.entity.security.MemberDetail;
+import com.example.arom1.entity.security.MemberSecurityContext;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
@@ -52,18 +53,19 @@ public class TokenProvider {
     // 3. 토큰 기반으로 인증 정보를 가져오는 메서드
     public Authentication getAuthentication(String token) {
         Claims claims = getClaims(token);
-        Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
 
-        return new UsernamePasswordAuthenticationToken(new org.springframework.security.core.userdetails.User(claims.getSubject
-                (), "", authorities), token, authorities);
+        MemberDetail memberDetail =
+        return new UsernamePasswordAuthenticationToken(
+                MemberDetail(),
+                null, authorities);
     }
 
-    // 4. 토큰 기반으로 유저 ID를 가져오는 메서드
-    public Long getUserId(String token) {
-        Claims claims = getClaims(token);
-
-        return claims.get("id", Long.class);
-    }
+//    // 4. 토큰 기반으로 유저 ID를 가져오는 메서드
+//    public Long getUserId(String token) {
+//        Claims claims = getClaims(token);
+//
+//        return claims.get("id", Long.class);
+//    }
 
     private Claims getClaims(String token) {
         return Jwts.parser() // 클레임 조회

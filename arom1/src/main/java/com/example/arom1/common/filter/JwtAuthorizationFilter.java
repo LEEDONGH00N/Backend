@@ -1,6 +1,7 @@
 package com.example.arom1.common.filter;
 
 import com.example.arom1.common.util.jwt.TokenProvider;
+import com.example.arom1.entity.security.MemberDetail;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
@@ -8,12 +9,10 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
 import java.io.IOException;
 
-@Component
 public class JwtAuthorizationFilter extends GenericFilterBean {
 
     private final TokenProvider tokenProvider;
@@ -30,6 +29,7 @@ public class JwtAuthorizationFilter extends GenericFilterBean {
         String token = tokenProvider.resolveToken((HttpServletRequest) servletRequest);
 
         if (token != null && tokenProvider.validateToken(token)) {
+            System.out.println("validate success");
             Authentication auth = tokenProvider.getAuthentication(token);
             SecurityContextHolder
                     .getContext()

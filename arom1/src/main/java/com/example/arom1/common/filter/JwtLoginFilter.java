@@ -10,17 +10,15 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-@Component
+
 public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final TokenProvider tokenProvider;
@@ -43,6 +41,7 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
 
         return authenticationManager.authenticate(authenticationToken);
@@ -56,12 +55,15 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
             throw new BaseException(BaseResponseStatus.HTTP_METHOD_ERROR);
         }
         MemberDetail memberDetail = (MemberDetail) authentication.getPrincipal();
+        System.out.println(authentication.getPrincipal());
+
 
         String jwtToken = tokenProvider.generateToken(memberDetail);
 
         response.addHeader("Authorization", "Bearer " + jwtToken);
 
-        doFilter(request, response, chain);
+        //원래 UsernamePasswordAuthenticationFilter에 없는 doFilter 추가
+        chain.doFilter(request, response);
     }
 
     @Override
