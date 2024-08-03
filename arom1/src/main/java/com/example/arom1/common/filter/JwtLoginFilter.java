@@ -4,7 +4,7 @@ import com.example.arom1.common.exception.BaseException;
 import com.example.arom1.common.response.BaseResponseStatus;
 import com.example.arom1.common.util.jwt.TokenProvider;
 import com.example.arom1.dto.request.LoginRequest;
-import com.example.arom1.entity.MemberDetail;
+import com.example.arom1.entity.security.MemberDetail;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
