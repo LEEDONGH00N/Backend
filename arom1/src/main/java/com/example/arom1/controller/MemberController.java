@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 public class MemberController {
@@ -27,7 +30,9 @@ public class MemberController {
     public BaseResponse<SignupResponse> signup(@RequestBody SignupRequest request,
                                                  BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
-            bindingResult.getAllErrors().forEach(error -> System.out.println(error.getDefaultMessage()));
+            List<String> errors = new ArrayList<>();
+            bindingResult.getAllErrors().forEach(error ->  errors.add(error.getDefaultMessage()));
+            return new BaseResponse<>(SignupResponse.ErrorMessagesToSignupResponse(errors));
         }
 
         try {
