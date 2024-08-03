@@ -1,6 +1,6 @@
 package com.example.arom1.common.util.jwt;
 
-import com.example.arom1.entity.MemberDetail;
+import com.example.arom1.entity.security.MemberDetail;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
