@@ -21,10 +21,16 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Component
-@RequiredArgsConstructor
 public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final TokenProvider tokenProvider;
+
+    public JwtLoginFilter(AuthenticationManager authenticationManager, TokenProvider tokenProvider) {
+        super.setAuthenticationManager(authenticationManager);
+        this.authenticationManager = authenticationManager;
+        this.tokenProvider = tokenProvider;
+    }
+
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
@@ -54,6 +60,8 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
         String jwtToken = tokenProvider.generateToken(memberDetail);
 
         response.addHeader("Authorization", "Bearer " + jwtToken);
+
+        doFilter(request, response, chain);
     }
 
     @Override

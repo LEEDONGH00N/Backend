@@ -2,6 +2,7 @@ package com.example.arom1.controller;
 
 import com.example.arom1.common.exception.BaseException;
 import com.example.arom1.common.response.BaseResponse;
+import com.example.arom1.dto.request.LoginRequest;
 import com.example.arom1.dto.request.SignupRequest;
 import com.example.arom1.dto.response.SignupResponse;
 import com.example.arom1.service.MemberService;
@@ -41,6 +42,12 @@ public class MemberController {
         } catch (BaseException e) {
             return new BaseResponse<>(e.getStatus());
         }
+    }
+    @PostMapping("/login")
+    public String login() {
+        System.out.println("Hello");
+
+        return "redirect:/login";
     }
     @GetMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
