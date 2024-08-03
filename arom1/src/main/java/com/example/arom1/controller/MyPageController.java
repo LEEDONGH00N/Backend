@@ -5,7 +5,6 @@ import com.example.arom1.common.exception.BaseException;
 import com.example.arom1.common.response.BaseResponse;
 import com.example.arom1.dto.response.MyPageResponse;
 import com.example.arom1.entity.security.MemberDetail;
-import com.example.arom1.entity.security.MemberSecurityContext;
 import com.example.arom1.service.MyPageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -24,10 +23,10 @@ public class MyPageController {
 
     //내 정보 불러오기
     @GetMapping("/mypage")
-    public BaseResponse<MyPageResponse> getMyPage(@AuthenticationPrincipal MemberSecurityContext MemberSecurityContext) {
+    public BaseResponse<MyPageResponse> getMyPage(@AuthenticationPrincipal MemberDetail memberDetail) {
         try {
-            System.out.println(MemberSecurityContext.getId());
-            return new BaseResponse<>(myPageService.getMyPage(1L));
+            Long id = memberDetail.getId();
+            return new BaseResponse<>(myPageService.getMyPage(id));
         } catch (BaseException e) {
             return new BaseResponse<>(e.getStatus());
         }
@@ -48,7 +47,8 @@ public class MyPageController {
     @GetMapping("/mypage/images")
     public BaseResponse<List<String>> getImages(@AuthenticationPrincipal MemberDetail memberDetail) {
         try {
-            return new BaseResponse<>(myPageService.getImages(memberDetail.getId()));
+            Long id = memberDetail.getId();
+            return new BaseResponse<>(myPageService.getImages(id));
         } catch (BaseException e) {
             return new BaseResponse<>(e.getStatus());
         }
@@ -77,7 +77,6 @@ public class MyPageController {
         try {
             myPageService.deleteImage(id, filename);
             return new BaseResponse<>(myPageService.getImages(id));
-
         } catch (BaseException e) {
             return new BaseResponse<>(e.getStatus());
         }

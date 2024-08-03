@@ -2,6 +2,8 @@ package com.example.arom1.common.util.jwt;
 
 import com.example.arom1.entity.security.MemberDetail;
 import com.example.arom1.entity.security.MemberSecurityContext;
+import com.example.arom1.repository.MemberRepository;
+import com.example.arom1.service.MemberDetailService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
@@ -11,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -18,9 +21,10 @@ import java.util.Date;
 import java.util.Set;
 
 @RequiredArgsConstructor
-@Service
+@Component
 public class TokenProvider {
     private final JwtProperties jwtProperties;
+    private final MemberDetailService memberDetailService;
 
     // 1. JWT 토큰 생성 메서드
     public String generateToken(MemberDetail memberDetail) {
@@ -54,10 +58,11 @@ public class TokenProvider {
     public Authentication getAuthentication(String token) {
         Claims claims = getClaims(token);
 
-        MemberDetail memberDetail =
+        MemberDetail memberDetail = memberDetailService.loadUserByUsername(claims.get("sub", String.class));
+
         return new UsernamePasswordAuthenticationToken(
-                MemberDetail(),
-                null, authorities);
+                memberDetail,
+                null, memberDetail.getAuthorities());
     }
 
 //    // 4. 토큰 기반으로 유저 ID를 가져오는 메서드

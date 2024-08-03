@@ -1,13 +1,10 @@
 package com.example.arom1.entity.security;
 
-
 import com.example.arom1.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 public class MemberSecurityContext {
     private Long id;
     private String role;
