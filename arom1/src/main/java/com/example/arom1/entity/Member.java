@@ -1,6 +1,6 @@
 package com.example.arom1.entity;
 
-import com.example.arom1.dto.response.MyPageDto;
+import com.example.arom1.dto.response.MyPageResponse;
 import com.example.arom1.dto.request.SignupRequest;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
@@ -71,7 +71,7 @@ public class Member extends BaseEntity {
         this.nickname = nickname;
     }
 
-    public void updateMyPage(MyPageDto dto) {
+    public void updateMyPage(MyPageResponse dto) {
         this.introduction = dto.getIntroduction();
         this.age = dto.getAge();
         this.nickname = dto.getNickname();

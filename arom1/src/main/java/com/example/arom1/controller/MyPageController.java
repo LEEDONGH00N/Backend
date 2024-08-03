@@ -3,8 +3,8 @@ package com.example.arom1.controller;
 
 import com.example.arom1.common.exception.BaseException;
 import com.example.arom1.common.response.BaseResponse;
-import com.example.arom1.dto.response.MyPageDto;
-import com.example.arom1.entity.MemberDetail;
+import com.example.arom1.dto.response.MyPageResponse;
+import com.example.arom1.entity.security.MemberDetail;
 import com.example.arom1.service.MyPageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -23,7 +23,7 @@ public class MyPageController {
 
     //내 정보 불러오기
     @GetMapping("/mypage")
-    public BaseResponse<MyPageDto> getMyPage(@AuthenticationPrincipal MemberDetail memberDetail) {
+    public BaseResponse<MyPageResponse> getMyPage(@AuthenticationPrincipal MemberDetail memberDetail) {
         Long id = 1L;
         try {
             return new BaseResponse<>(myPageService.getMyPage(id));
@@ -34,10 +34,10 @@ public class MyPageController {
 
     //내 정보 수정하기
     @PutMapping("/mypage")
-    public BaseResponse<MyPageDto> updateMyPage(@RequestBody MyPageDto myPageDto, @AuthenticationPrincipal MemberDetail memberDetail) {
+    public BaseResponse<MyPageResponse> updateMyPage(@RequestBody MyPageResponse myPageResponse, @AuthenticationPrincipal MemberDetail memberDetail) {
         Long id = 1L;
         try {
-            return new BaseResponse<>(myPageService.updateById(id, myPageDto));
+            return new BaseResponse<>(myPageService.updateById(id, myPageResponse));
         } catch (BaseException e) {
             return new BaseResponse<>(e.getStatus());
         }

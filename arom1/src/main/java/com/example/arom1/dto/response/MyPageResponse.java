@@ -6,20 +6,20 @@ import lombok.Getter;
 
 
 @Getter
-public class MyPageDto {
+public class MyPageResponse {
     private String nickname;
     private int age;
     private String introduction;
 
     @Builder
-    private MyPageDto(String nickname, int age, String introduction) {
+    private MyPageResponse(String nickname, int age, String introduction) {
         this.nickname = nickname;
         this.age = age;
         this.introduction = introduction;
     }
 
-    public static MyPageDto toMyPageDto(Member member) {
-        return MyPageDto.builder()
+    public static MyPageResponse toMyPageResponse(Member member) {
+        return MyPageResponse.builder()
                 .age(member.getAge())
                 .introduction(member.getIntroduction())
                 .nickname(member.getNickname())
