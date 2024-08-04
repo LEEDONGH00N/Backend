@@ -13,8 +13,12 @@ import com.example.arom1.entity.MemberDetail;
 import com.example.arom1.entity.Review;
 import com.example.arom1.repository.MeetingRepository;
 import com.example.arom1.service.MeetingService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -49,7 +53,12 @@ public class MeetingController {
 
     //음식점 식사 메이트 구하는 글 작성
     @PostMapping("/{eateryId}/meetings")
-    public BaseResponse<?> saveMeeting(@PathVariable long eateryId, @RequestBody MeetingDto meetingDto){
+    public BaseResponse<?> saveMeeting(@PathVariable long eateryId, @Valid @RequestBody MeetingDto meetingDto, BindingResult bindingResult){
+       if(bindingResult.hasErrors()){
+           List<FieldError> errors = bindingResult.getFieldErrors();
+           return new BaseResponse<>(HttpStatus.BAD_REQUEST.value());
+       }
+
         try{
             // 저장된 회의 정보를 반환
             MeetingResponse meetingResponse = meetingService.saveMeeting(meetingDto);
@@ -67,7 +76,11 @@ public class MeetingController {
 
     //수정
     @PutMapping("/{eateryId}/meetings/{meetingId}")
-    public BaseResponse<?> updateMeeting(@PathVariable Long eateryId, @PathVariable Long meetingId, @RequestBody MeetingDto meetingDto ){
+    public BaseResponse<?> updateMeeting(@PathVariable Long eateryId, @PathVariable Long meetingId, @Valid @RequestBody MeetingDto meetingDto, BindingResult bindingResult ){
+        if(bindingResult.hasErrors()){
+            List<FieldError> errors = bindingResult.getFieldErrors();
+            return new BaseResponse<>(HttpStatus.BAD_REQUEST.value());
+        }
         try{
             MeetingResponse updatedMeeting = meetingService.updateMeeting(eateryId, meetingId, meetingDto);
             return new BaseResponse<>(updatedMeeting);
@@ -79,7 +92,11 @@ public class MeetingController {
 
     //삭제
     @DeleteMapping("/{eateryId}/meetings/{meetingId}")
-    public BaseResponse<?> deleteMeeting(@PathVariable Long eateryId, @PathVariable Long meetingId, @RequestBody MeetingDto meetingDto ){
+    public BaseResponse<?> deleteMeeting(@PathVariable Long eateryId, @Valid @PathVariable Long meetingId, @RequestBody MeetingDto meetingDto, BindingResult bindingResult ){
+        if(bindingResult.hasErrors()){
+            List<FieldError> errors = bindingResult.getFieldErrors();
+            return new BaseResponse<>(HttpStatus.BAD_REQUEST.value());
+        }
         try{
             meetingService.deleteMeeting(meetingId, meetingDto.getMember_id());
             return new BaseResponse<>(BaseResponseStatus.SUCCESS);
