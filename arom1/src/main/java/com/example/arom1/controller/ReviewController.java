@@ -4,29 +4,17 @@ import com.example.arom1.common.exception.BaseException;
 import com.example.arom1.common.response.BaseResponse;
 import com.example.arom1.common.response.BaseResponseStatus;
 import com.example.arom1.dto.ReviewDto;
-import com.example.arom1.dto.request.SeoulEateryDto;
-import com.example.arom1.dto.response.EateryResponse;
 import com.example.arom1.dto.response.ReviewResponse;
-import com.example.arom1.entity.Eatery;
-import com.example.arom1.entity.Review;
-import com.example.arom1.repository.ReviewRepository;
 import com.example.arom1.service.ReviewService;
-import com.fasterxml.jackson.databind.ser.Serializers;
 import jakarta.validation.Valid;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 public class ReviewController {
