@@ -14,6 +14,6 @@ public class MessageController {
 
     @MessageMapping("/hello")
     public void message(MessageDto messageDto){
-        simpMessageSendingOperations.convertAndSend("/sub/channel/" + messageDto.getChannelId(), messageDto);
+        simpMessageSendingOperations.convertAndSend("/sub/chatroom/" + messageDto.getChatroomId(), messageDto);
     }
 }
