@@ -1,15 +1,9 @@
 package com.example.arom1.dto;
 
-
-import com.example.arom1.entity.Eatery;
-import com.example.arom1.entity.Member;
-import com.example.arom1.entity.Review;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.validator.constraints.Range;
 
 @Getter
