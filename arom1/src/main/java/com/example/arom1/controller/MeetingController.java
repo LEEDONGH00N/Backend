@@ -5,26 +5,18 @@ import com.example.arom1.common.exception.BaseException;
 import com.example.arom1.common.response.BaseResponse;
 import com.example.arom1.common.response.BaseResponseStatus;
 import com.example.arom1.dto.MeetingDto;
-import com.example.arom1.dto.ReviewDto;
 import com.example.arom1.dto.response.MeetingResponse;
-import com.example.arom1.dto.response.ReviewResponse;
-import com.example.arom1.entity.Meeting;
-import com.example.arom1.entity.MemberDetail;
-import com.example.arom1.entity.Review;
 import com.example.arom1.repository.MeetingRepository;
 import com.example.arom1.service.MeetingService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/eatery")
@@ -32,8 +24,7 @@ public class MeetingController {
 
     @Autowired
     private MeetingService meetingService;
-    @Autowired
-    private MeetingRepository meetingRepository;
+
 
     //음식점 선택 후 식사 메이트 구하는 글 보기
     @GetMapping("/{eateryId}/meetings")
