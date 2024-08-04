@@ -1,15 +1,10 @@
 package com.example.arom1.dto;
 
-import com.example.arom1.entity.Eatery;
-import com.example.arom1.entity.Meeting;
-import com.example.arom1.entity.Member;
-import com.example.arom1.entity.Review;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.cglib.core.Local;
-
 import java.time.LocalDateTime;
 
 @Getter
