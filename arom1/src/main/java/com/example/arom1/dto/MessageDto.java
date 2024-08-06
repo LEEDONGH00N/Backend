@@ -12,7 +12,7 @@ import lombok.Setter;
 public class MessageDto {
     private String type;
     private String sender;
-    private String channelId;
+    private String chatroomId;
     private String data;
 
     public void setSender(String sender) {
