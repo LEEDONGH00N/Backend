@@ -3,61 +3,62 @@ package com.example.arom1.common.filter;
 import com.example.arom1.common.exception.BaseException;
 import com.example.arom1.common.response.BaseResponseStatus;
 import com.example.arom1.common.util.jwt.TokenProvider;
-import com.example.arom1.dto.LoginDto;
-import com.example.arom1.entity.MemberDetail;
+import com.example.arom1.dto.request.LoginRequest;
+import com.example.arom1.entity.security.MemberDetail;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
 @RequiredArgsConstructor
-public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
-    private final AuthenticationManager authenticationManager;
-    private final TokenProvider tokenProvider;
+public class JwtLoginFilter extends OncePerRequestFilter {
+
+//    private final AuthenticationManager authenticationManager;
+//    private final TokenProvider tokenProvider;
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
-        System.out.println("LoginFilter 인증 : 진입");
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        LoginDto loginDto = null;
-        try {
-            loginDto = objectMapper.readValue(request.getInputStream(), LoginDto.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
+//        if (!request.getMethod()
+//                .equals("POST")) {
+//            throw new BaseException(BaseResponseStatus.HTTP_METHOD_ERROR);
+//        }
+//
+//        System.out.println("LoginFilter 인증 : 진입");
+//
+//        LoginRequest loginRequest = null;
+//        try {
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            loginRequest = objectMapper.readValue(request.getInputStream(), LoginRequest.class);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());
+//
+//        try {
+//            authenticationManager.authenticate(authenticationToken);
+//            MemberDetail memberDetail = (MemberDetail) authenticationToken.getPrincipal();
+//            String jwtToken = tokenProvider.generateToken(memberDetail);
+//
+//            response.addHeader("Authorization", "Bearer " + jwtToken);
+//        } catch (AuthenticationException e) {
+//            throw new BaseException(BaseResponseStatus.NON_EXIST_USER);
+//        }
+//
+//        filterChain.doFilter(request, response);
 
-        return authenticationManager.authenticate(authenticationToken);
-
-
-    }
-    @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
-       String method = request.getMethod();
-        if (!method.equals("POST")) {
-            throw new BaseException(BaseResponseStatus.HTTP_METHOD_ERROR);
-        }
-        MemberDetail memberDetail = (MemberDetail) authentication.getPrincipal();
-
-        String jwtToken = tokenProvider.generateToken(memberDetail);
-
-        response.addHeader("Authorization", "Bearer " + jwtToken);
-    }
-
-    @Override
-    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException {
-        System.out.println("Authentication failed");
-        throw new BaseException(BaseResponseStatus.NON_EXIST_USER);
     }
 
 

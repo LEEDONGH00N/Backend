@@ -13,6 +13,9 @@ public enum BaseResponseStatus {
     SUCCESS(true, HttpStatus.OK.value(), "요청에 성공하였습니다."),
 
     // 4xx : client error
+    NO_JWT_TOKEN(false, HttpStatus.UNAUTHORIZED.value(), "헤더에 토큰이 없습니다."),
+    INVALID_JWT_TOKEN(false, HttpStatus.UNAUTHORIZED.value(), "잘못된 토큰입니다."),
+
     EXIST_EMAIL(false, HttpStatus.CONFLICT.value(), "이미 존재하는 회원입니다."),
     EXIST_NICKNAME(false, HttpStatus.CONFLICT.value(), "이미 존재하는 닉네임입니다."),
 
@@ -25,7 +28,6 @@ public enum BaseResponseStatus {
 
     NO_IMAGE_BY_URL(false, HttpStatus.NO_CONTENT.value(), "해당 URL 이미지가 없습니다."),
 
-    FAIL_REVIEW_POST(false, HttpStatus.INTERNAL_SERVER_ERROR.value(), "리뷰 작성에 실패했습니다."),
     INVALID_MEMBER(false, HttpStatus.NOT_FOUND.value(), "유효하지 않은 회원입니다."),
     INVALID_EATERY(false, HttpStatus.NOT_FOUND.value(), "유효하지 않은 음식점입니다."),
     NO_REVIEW_EXIST(false, HttpStatus.NO_CONTENT.value(), "존재하지 않는 리뷰입니다."),
@@ -33,6 +35,8 @@ public enum BaseResponseStatus {
     INVALID_CHATROOM(false, HttpStatus.NOT_FOUND.value(), "유효하지 않은 채팅방입니다."),
 
     // 5xx : server error
+    FAIL_REVIEW_POST(false, HttpStatus.INTERNAL_SERVER_ERROR.value(), "리뷰 작성에 실패했습니다."),
+
     DATABASE_INSERT_ERROR(false, HttpStatus.INTERNAL_SERVER_ERROR.value(), "데이터베이스 입력에 실패했습니다."),
 
     FAIL_IMAGE_CONVERT(false, HttpStatus.INTERNAL_SERVER_ERROR.value(), "Multipart 파일 전환에 실패했습니다.");

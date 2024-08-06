@@ -16,9 +16,9 @@ spring:
   #        default_batch_fetch_size: 100
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/withEat
-    username: withEat
-    password: Dlehdgns0126!
+    url: jdbc:mysql://127.0.0.1:3306/arom1
+    username: root
+    password: We7380we@
   jpa:
     hibernate:
       ddl-auto: update
@@ -26,6 +26,10 @@ spring:
     properties:
       hibernate:
     database-platform: org.hibernate.spatial.dialect.mysql.MySQL5InnoDBSpatialDialect
+  servlet:
+    multipart:      # 이미지 관련 설정
+      maxFileSize: 2MB # 파일 하나의 최대 크기
+      maxRequestSize: 6MB  # 한 번에 최대 업로드 가능 용량
 
 jwt:
   issuer: tmdgh784@naver.com

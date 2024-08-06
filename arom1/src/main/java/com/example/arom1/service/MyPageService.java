@@ -3,7 +3,7 @@ package com.example.arom1.service;
 
 import com.example.arom1.common.exception.BaseException;
 import com.example.arom1.common.response.BaseResponseStatus;
-import com.example.arom1.dto.MyPageDto;
+import com.example.arom1.dto.response.MyPageResponse;
 import com.example.arom1.entity.Image;
 import com.example.arom1.entity.Member;
 import com.example.arom1.repository.ImageRepository;
@@ -30,23 +30,23 @@ public class MyPageService {
     private ImageRepository imageRepository;
 
     // 내 정보 불러오기
-    public MyPageDto getMyPage(Long id) {
+    public MyPageResponse getMyPage(Long id) {
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.NON_EXIST_USER));
 
-        return MyPageDto.toMyPageDto(member);
+        return MyPageResponse.toMyPageResponse(member);
     }
 
     // 내 정보 업데이트
-    public MyPageDto updateById(Long id, MyPageDto myPageDto) {
+    public MyPageResponse updateById(Long id, MyPageResponse myPageResponse) {
         Member updatedMember = memberRepository.findById(id)
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.NON_EXIST_USER));
 
-        updatedMember.updateMyPage(myPageDto);
+        updatedMember.updateMyPage(myPageResponse);
 
         memberRepository.save(updatedMember);
 
-        return myPageDto;
+        return myPageResponse;
     }
 
 

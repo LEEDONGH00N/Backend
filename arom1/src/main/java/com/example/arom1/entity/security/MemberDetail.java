@@ -1,4 +1,4 @@
-package com.example.arom1.entity;
+package com.example.arom1.entity.security;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -9,26 +9,26 @@ import java.util.List;
 
 public class MemberDetail implements UserDetails {
 
-    private Member member;
+    private MemberSecurityContext memberSecurityContext;
 
-    public MemberDetail(Member member) {
-        this.member = member;
+    public MemberDetail(MemberSecurityContext memberSecurityContext) {
+        this.memberSecurityContext = memberSecurityContext;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("member"));
+        return List.of(new SimpleGrantedAuthority(memberSecurityContext.getRole()));
     }
-    public Long getId() { return member.getId(); }
+    public Long getId() { return memberSecurityContext.getId(); }
 
     @Override
     public String getUsername() {
-        return member.getEmail();
+        return memberSecurityContext.getEmail();
     }
 
     @Override
     public String getPassword() {
-        return member.getPassword();
+        return memberSecurityContext.getPassword();
     }
 
     @Override
