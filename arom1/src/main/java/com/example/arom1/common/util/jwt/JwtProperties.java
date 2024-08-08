@@ -15,5 +15,6 @@ public class JwtProperties {
 
     private String issuer;
     private String secretKey;
-    private Duration expiredAt = Duration.ofDays(1);
+    private Duration accessExpiredAt = Duration.ofMinutes(1);
+    private Duration refreshExpiredAt = Duration.ofDays(7);
 }

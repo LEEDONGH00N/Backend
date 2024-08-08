@@ -13,14 +13,12 @@ public enum BaseResponseStatus {
     SUCCESS(true, HttpStatus.OK.value(), "요청에 성공하였습니다."),
 
     // 4xx : client error
-    NO_JWT_TOKEN(false, HttpStatus.UNAUTHORIZED.value(), "헤더에 토큰이 없습니다."),
-    INVALID_JWT_TOKEN(false, HttpStatus.UNAUTHORIZED.value(), "잘못된 토큰입니다."),
+    FAIL_TOKEN_AUTHORIZATION(false, HttpStatus.UNAUTHORIZED.value(), "토큰 인증에 실패하였습니다."),
 
     EXIST_EMAIL(false, HttpStatus.CONFLICT.value(), "이미 존재하는 회원입니다."),
     EXIST_NICKNAME(false, HttpStatus.CONFLICT.value(), "이미 존재하는 닉네임입니다."),
 
     NON_EXIST_USER(false, HttpStatus.NO_CONTENT.value(), "존재하지 않는 회원입니다."),
-    PASSWORD_ERROR(false, HttpStatus.NO_CONTENT.value(), "비밀번호가 틀렸습니다."),
     HTTP_METHOD_ERROR(false, HttpStatus.FORBIDDEN.value(), "http 메서드가 올바르지 않습니다."),
 
     NO_EATERY_BY_KEYWORD(false, HttpStatus.NO_CONTENT.value(), "검색어로 된 음식점이 없습니다."),

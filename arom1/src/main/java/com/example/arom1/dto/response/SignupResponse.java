@@ -27,7 +27,7 @@ public class SignupResponse {
         this.nickname = nickname;
     }
 
-    public static SignupResponse MemberToSignupResponse(Member member) {
+    public static SignupResponse of(Member member) {
         return SignupResponse.builder()
                 .id(member.getId())
                 .email(member.getEmail())
