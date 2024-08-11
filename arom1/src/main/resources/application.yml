@@ -38,11 +38,11 @@ spring:
             client-id: 클라이언트 ID값
             client-secret: 클라이언트 시크릿값
             client-authentication-method: client_secret_post
-            redirect-uri: http://localhost:8080/login/oauth2/kakao/redirect
+            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
             authorization-grant-type: authorization_code
-            client-name: kakao
+            client-name: Kakao
             scope:
-              - profile
+              - profile_nickname
               - account_email
         provider:
           kakao:
