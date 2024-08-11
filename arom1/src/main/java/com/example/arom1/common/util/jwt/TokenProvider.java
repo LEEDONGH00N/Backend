@@ -72,7 +72,7 @@ public class TokenProvider {
 //        return claims.get("id", Long.class);
 //    }
 
-    private Claims getClaims(String token) {
+    public Claims getClaims(String token) {
         return Jwts.parser() // 클레임 조회
                 .setSigningKey(jwtProperties.getSecretKey())
                 .parseClaimsJws(token)
@@ -83,6 +83,14 @@ public class TokenProvider {
         String bearerToken = request.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer")) {
             return bearerToken.substring(7);
+        }
+        return null;
+    }
+
+    //JWT 토큰 추출
+    public String extractJwt(String authorizationHeader) {
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            return authorizationHeader.substring(7);
         }
         return null;
     }
