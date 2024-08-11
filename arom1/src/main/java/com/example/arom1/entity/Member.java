@@ -60,6 +60,10 @@ public class Member extends BaseEntity {
         MALE, FEMALE
     }
 
+    //oauth2
+    private String provider;
+    private String providerId;
+
     @Builder
     private Member(String email, String password, String name, String introduction, Gender gender, int age, String nickname) {
         this.email = email;
