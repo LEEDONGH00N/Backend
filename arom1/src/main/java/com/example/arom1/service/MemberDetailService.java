@@ -20,7 +20,6 @@ public class MemberDetailService implements UserDetailsService {
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.NON_EXIST_USER));
 
-        return new MemberDetail(MemberSecurityContext
-                .MemberToMemberSecurityContext(member));
+        return new MemberDetail(MemberSecurityContext.of(member));
     }
 }
