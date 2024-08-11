@@ -2,7 +2,6 @@ package com.example.arom1.service;
 
 import com.example.arom1.common.exception.BaseException;
 import com.example.arom1.common.response.BaseResponseStatus;
-import com.example.arom1.dto.response.ChatRoomResponse;
 import com.example.arom1.entity.ChatRoom;
 import com.example.arom1.entity.Meeting;
 import com.example.arom1.repository.ChatRoomRepository;
@@ -22,7 +21,6 @@ public class ChatRoomService {
     private MeetingRepository meetingRepository;
 
     public Long createChatRoom(Long meetingId) {
-
         Meeting meeting = meetingRepository.findById(meetingId)
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.INVALID_MEETING));
 
@@ -36,10 +34,17 @@ public class ChatRoomService {
 
         // 채팅방 저장
         ChatRoom savedChatRoom = chatRoomRepository.save(chatRoom);
-
         return savedChatRoom.getId();
-
     }
+
+    public List<ChatRoom> findAllChatRooms() {
+        return chatRoomRepository.findAll();
+    }
+
+    public Optional<ChatRoom> findChatRoomById(Long id) {
+        return chatRoomRepository.findById(id);
+    }
+
 
 
 }
