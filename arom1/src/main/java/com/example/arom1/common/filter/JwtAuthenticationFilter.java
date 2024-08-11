@@ -27,7 +27,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         //로그인, 회원가입 시 인증 필터 무시
         String requestURI = request.getRequestURI();
-        if (requestURI.equals("/login") || requestURI.equals("/signup")) {
+        if (requestURI.equals("/login") || requestURI.equals("/signup") || requestURI.equals("/ws")) {
             filterChain.doFilter(request, response);
             return;
         }
