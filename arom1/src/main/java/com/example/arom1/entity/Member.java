@@ -63,9 +63,10 @@ public class Member extends BaseEntity {
     //oauth2
     private String provider;
     private String providerId;
+    private String role;
 
     @Builder
-    private Member(String email, String password, String name, String introduction, Gender gender, int age, String nickname) {
+    private Member(String email, String password, String name, String introduction, Gender gender, int age, String nickname, String role, String provider) {
         this.email = email;
         this.password = password;
         this.name = name;
@@ -73,6 +74,8 @@ public class Member extends BaseEntity {
         this.gender = gender;
         this.age = age;
         this.nickname = nickname;
+        this.role = role;
+        this.provider = provider;
     }
 
     public void updateMyPage(MyPageResponse dto) {
@@ -96,6 +99,7 @@ public class Member extends BaseEntity {
                 .introduction(dto.getIntroduction())
                 .age(dto.getAge())
                 .nickname(dto.getNickname())
+                .role("ROLE_MEMBER")
                 .build();
     }
 

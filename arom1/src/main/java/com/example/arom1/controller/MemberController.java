@@ -10,6 +10,7 @@ import com.example.arom1.dto.response.LoginResponse;
 import com.example.arom1.dto.response.SignupResponse;
 import com.example.arom1.entity.security.MemberDetail;
 import com.example.arom1.service.MemberService;
+import com.example.arom1.service.RefreshTokenService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -18,11 +19,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +30,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
+    private final RefreshTokenService refreshTokenService;
 
     @PostMapping("/signup")
     public BaseResponse<SignupResponse> signup(@Valid @RequestBody SignupRequest request,
@@ -69,7 +69,7 @@ public class MemberController {
         }
 
         try {
-            String newAccessToken = memberService.reissueAccessToken(tokenReissueRequest.getRefreshToken(), request);
+            String newAccessToken = refreshTokenService.reissueAccessToken(tokenReissueRequest.getRefreshToken(), request);
             response.addHeader("Authorization", "Bearer " + newAccessToken);
             return new BaseResponse<>("reissue AccessToken Success");
         }
@@ -82,6 +82,16 @@ public class MemberController {
 
     }
 
+    // OAuth2 로그인 시 최초 로그인인 경우 회원가입 진행, 필요한 정보를 쿼리 파라미터로 받는다
+    @GetMapping("/oauth2/signup")
+    public String loadOAuthSignUp(@RequestParam String email, @RequestParam String socialType, @RequestParam String socialId, Model model) {
+        model.addAttribute("email", email);
+        model.addAttribute("socialType", socialType);
+        model.addAttribute("socialId", socialId);
+        return "/signup";
+    }
+
+    //나중에 손보기
     @GetMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
