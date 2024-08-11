@@ -1,5 +1,6 @@
 package com.example.arom1.common.filter;
 
+import com.example.arom1.common.exception.BaseException;
 import com.example.arom1.common.response.BaseResponse;
 import com.example.arom1.common.response.BaseResponseStatus;
 import com.example.arom1.common.util.jwt.TokenProvider;
@@ -27,7 +28,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         //로그인, 회원가입 시 인증 필터 무시
         String requestURI = request.getRequestURI();
-        if (requestURI.equals("/login") || requestURI.equals("/signup") || requestURI.equals("/ws")) {
+        if (requestURI.equals("/login") || requestURI.equals("/signup") || requestURI.equals("/login/refresh") ) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -36,21 +37,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String token = tokenProvider.resolveToken(request);
 
-        if (token == null) {
-            sendErrorResponse(response, BaseResponseStatus.NO_JWT_TOKEN);
-        }
-        else if (!tokenProvider.validateToken(token)) {
-            sendErrorResponse(response, BaseResponseStatus.INVALID_JWT_TOKEN);
-        }
-        else {
+        try {
+            tokenProvider.validateToken(token);
             Authentication auth = tokenProvider.getAuthentication(token);
-            SecurityContextHolder
-                    .getContext()
-                    .setAuthentication(auth);
+            SecurityContextHolder.getContext().setAuthentication(auth);
 
             System.out.println("validate success");
+            //예외 발생시 doFilter 하면 유저한테 BaseResponse 제공 불가
             filterChain.doFilter(request, response);
         }
+        catch (BaseException e) {
+            sendErrorResponse(response, BaseResponseStatus.FAIL_TOKEN_AUTHORIZATION);
+        }
+
+
     }
 
     private void sendErrorResponse(HttpServletResponse response, BaseResponseStatus status) throws IOException {
