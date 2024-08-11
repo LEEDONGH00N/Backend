@@ -3,23 +3,44 @@ package com.example.arom1.entity.security;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
-public class MemberDetail implements UserDetails {
+public class MemberDetail implements UserDetails, OAuth2User {
 
-    private MemberSecurityContext memberSecurityContext;
+    private final MemberSecurityContext memberSecurityContext;
+    private Map<String, Object> attributes;
 
     public MemberDetail(MemberSecurityContext memberSecurityContext) {
         this.memberSecurityContext = memberSecurityContext;
     }
 
+    // OAuth2로 회원가입, 로그인 하기 위한 생성자
+    public MemberDetail(MemberSecurityContext memberSecurityContext, Map<String, Object> attributes) {
+        this.memberSecurityContext = memberSecurityContext;
+        this.attributes = attributes;
+    }
+
+    // OAuth2User 오버라이딩 메서드
+    @Override
+    public Map<String, Object> getAttributes() {
+        return attributes;
+    }
+
+    @Override
+    public String getName() {
+        return null;
+    }
+
+    public Long getId() { return memberSecurityContext.getId(); }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(memberSecurityContext.getRole()));
     }
-    public Long getId() { return memberSecurityContext.getId(); }
 
     @Override
     public String getUsername() {
@@ -52,4 +73,6 @@ public class MemberDetail implements UserDetails {
     public boolean isEnabled() {
         return true; // true -> 사용 가능
     }
+
+
 }

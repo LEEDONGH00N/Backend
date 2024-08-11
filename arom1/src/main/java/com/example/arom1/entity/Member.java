@@ -60,6 +60,10 @@ public class Member extends BaseEntity {
         MALE, FEMALE
     }
 
+    //oauth2
+    private String provider;
+    private String providerId;
+
     @Builder
     private Member(String email, String password, String name, String introduction, Gender gender, int age, String nickname) {
         this.email = email;
@@ -85,7 +89,7 @@ public class Member extends BaseEntity {
 
 
     public static Member createMember(SignupRequest dto, PasswordEncoder passwordEncoder) {
-        Member member = Member.builder()
+        return Member.builder()
                 .email(dto.getEmail())
                 .password(passwordEncoder.encode(dto.getPassword()))  //암호화처리
                 .name(dto.getName())
@@ -93,7 +97,6 @@ public class Member extends BaseEntity {
                 .age(dto.getAge())
                 .nickname(dto.getNickname())
                 .build();
-        return member;
     }
 
     public static boolean isLogin() {

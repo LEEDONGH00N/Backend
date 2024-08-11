@@ -21,7 +21,7 @@ public class MemberSecurityContext {
         this.password = password;
     }
 
-    public static MemberSecurityContext MemberToMemberSecurityContext(Member member) {
+    public static MemberSecurityContext of(Member member) {
         return MemberSecurityContext.builder()
                 .id(member.getId())
                 .name(member.getName())
