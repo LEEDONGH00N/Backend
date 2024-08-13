@@ -32,13 +32,22 @@ public class MemberController {
     private final MemberService memberService;
     private final RefreshTokenService refreshTokenService;
 
+    @GetMapping("/oauth2/signup")
+    public BaseResponse<SignupResponse> oauth2Signup(@RequestParam String email,
+                                                     @RequestParam String socialType,
+                                                     @RequestParam String socialId) {
+        return new BaseResponse<>(
+                SignupResponse.builder()
+                .email(email)
+                .password(socialId)
+                .build()
+        );
+    }
     @PostMapping("/signup")
-    public BaseResponse<SignupResponse> signup(@Valid @RequestBody SignupRequest request,
-                                                 BindingResult bindingResult) {
+    public BaseResponse<SignupResponse> signup(@Valid @RequestBody SignupRequest request, BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
             return new BaseResponse<>(false, HttpStatus.BAD_REQUEST.value(), findErrorMessage(bindingResult));
         }
-
         try {
             return new BaseResponse<>(SignupResponse.of(memberService.saveMember(request)));
         } catch (BaseException e) {
@@ -46,8 +55,7 @@ public class MemberController {
         }
     }
     @PostMapping("/login")
-    public BaseResponse<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest,
-                                      BindingResult bindingResult, HttpServletResponse response) {
+    public BaseResponse<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest, BindingResult bindingResult, HttpServletResponse response) {
         if(bindingResult.hasErrors()) {
             return new BaseResponse<>(false, HttpStatus.BAD_REQUEST.value(), findErrorMessage(bindingResult));
         }

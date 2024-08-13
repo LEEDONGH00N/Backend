@@ -27,21 +27,18 @@ public class MemberService {
 
     public Member saveMember(SignupRequest request) {
         Member member = Member.createMember(request, passwordEncoder);
-
         if (memberRepository.findByEmail(member.getEmail()).isPresent()) {
             throw new BaseException(BaseResponseStatus.EXIST_EMAIL);
         }
-
         return memberRepository.save(member);
     }
     //로그인 필터 -> 로그인 서비스 메서드 변경 (이유: 예외 처리 수월 등)
     public LoginResponse login(LoginRequest loginRequest) {
         UsernamePasswordAuthenticationToken authenticationToken
                 = new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());
-
         try {
+            //OAuth2에도 쓰이는 로직이므로 login 메서드와 분리
             return refreshTokenService.buildLoginResponse(authenticationManager.authenticate(authenticationToken));
-
         } catch (AuthenticationException e) {
             System.out.println("AuthenticationException : " + e.getMessage());
             throw new BaseException(BaseResponseStatus.NON_EXIST_USER);
@@ -52,6 +49,5 @@ public class MemberService {
         refreshTokenService.deleteRefreshToken(memberDetail);
 
     }
-
 
 }
