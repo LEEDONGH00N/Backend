@@ -1,10 +1,10 @@
 package com.example.arom1.dto.request;
 
+import com.example.arom1.entity.Member;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 public class SignupRequest {
@@ -28,5 +28,7 @@ public class SignupRequest {
     @NotBlank(message = "닉네임을 입력해주세요.")
     private String nickname;
 
+    @NotNull(message = "성별을 선택해주세요.")
+    private Member.Gender gender;
 
 }

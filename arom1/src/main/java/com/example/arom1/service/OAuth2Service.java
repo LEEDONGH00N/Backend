@@ -4,8 +4,6 @@ import com.example.arom1.entity.Member;
 import com.example.arom1.entity.oauth2.CustomOAuth2User;
 import com.example.arom1.entity.oauth2.KakaoUserDetails;
 import com.example.arom1.entity.oauth2.OAuth2UserInfo;
-import com.example.arom1.entity.security.MemberDetail;
-import com.example.arom1.entity.security.MemberSecurityContext;
 import com.example.arom1.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,13 +11,10 @@ import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserServ
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
-import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
-import java.util.Map;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -50,7 +45,7 @@ public class OAuth2Service implements OAuth2UserService<OAuth2UserRequest, OAuth
                 .orElse(Member.builder()
                         .email(email).password(password).role("ROLE_GUEST").provider(provider).build());
 
-        // 회원의 권한과, 회원속성, 속성이름을 이용해 DefaultOAuth2User 객체를 생성해 반환한다.
+        // 권한, 회원속성, 속성이름, Member 객체로 CustomOAuth2User 객체 반환
         return new CustomOAuth2User(Collections.singleton(new SimpleGrantedAuthority(member.getRole())),
                 oAuth2User.getAttributes(), userNameAttributeName, member);
     }
@@ -59,14 +54,12 @@ public class OAuth2Service implements OAuth2UserService<OAuth2UserRequest, OAuth
     private OAuth2UserInfo findProvider(String provider, OAuth2User oAuth2User) {
         if (provider.equals("kakao")) {
             System.out.println("카카오 로그인");
-            return new KakaoUserDetails(oAuth2User.getAttributes());
         }
 //        if(provider.equals("google")){
 //            System.out.println("구글 로그인");
 //            return new GoogleUserDetails(oAuth2User.getAttributes());
 //        }
-
-        return null;
+        return new KakaoUserDetails(oAuth2User.getAttributes());
     }
 
 
