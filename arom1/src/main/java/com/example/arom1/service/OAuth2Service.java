@@ -45,7 +45,7 @@ public class OAuth2Service implements OAuth2UserService<OAuth2UserRequest, OAuth
                 .orElse(Member.builder()
                         .email(email).password(password).role("ROLE_GUEST").provider(provider).build());
 
-        // 회원의 권한과, 회원속성, 속성이름을 이용해 DefaultOAuth2User 객체를 생성해 반환한다.
+        // 권한, 회원속성, 속성이름, Member 객체로 CustomOAuth2User 객체 반환
         return new CustomOAuth2User(Collections.singleton(new SimpleGrantedAuthority(member.getRole())),
                 oAuth2User.getAttributes(), userNameAttributeName, member);
     }
