@@ -36,7 +36,7 @@ public class MemberService {
     public void deleteMember(MemberDetail memberDetail) {
         memberRepository.deleteById(memberDetail.getId());
         logout(memberDetail);
-        System.out.println("delete member success");
+        System.out.println("MemberService: Delete Member SUCCESS.");
     }
 
     //로그인 필터 -> 로그인 서비스 메서드 변경 (이유: 예외 처리 수월 등)
