@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -29,7 +30,7 @@ public class MyPageController {
     private final MemberService memberService;
 
     //회원 탈퇴 메서드
-    @DeleteMapping(path = "/deleteid")
+    @DeleteMapping("/deleteid")
     public BaseResponse<String> cancelAccount(@AuthenticationPrincipal MemberDetail memberDetail) {
         try {
             memberService.deleteMember(memberDetail);
@@ -90,10 +91,11 @@ public class MyPageController {
         try {
             myPageService.updateImage(id, multipartFile);
             return new BaseResponse<>(myPageService.getImages(id));
+        } catch (NullPointerException | MultipartException e) {
+            return new BaseResponse<>(false, HttpStatus.BAD_REQUEST.value(), e.getMessage());
         } catch (BaseException e) {
             return new BaseResponse<>(e.getStatus());
         }
-
     }
 
     //이미지 삭제하기
