@@ -21,8 +21,8 @@ public class RefreshTokenService {
 
     //OAuth2에도 쓰이는 로직이므로 login 메서드와 분리
     @Transactional
-    public LoginResponse buildLoginResponse(Authentication authentication) {
-        MemberDetail memberDetail = (MemberDetail) authentication.getPrincipal();
+    public LoginResponse buildLoginResponse(MemberDetail memberDetail) {
+        //MemberDetail memberDetail1 = (MemberDetail) authentication.getPrincipal();
         Long memberId = memberDetail.getId();
 
         RefreshToken refreshToken = RefreshToken.of(tokenProvider.generateRefreshToken(memberDetail), memberId);

@@ -45,7 +45,7 @@ public class MemberService {
                 = new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());
         try {
             //OAuth2에도 쓰이는 로직이므로 login 메서드와 분리
-            return refreshTokenService.buildLoginResponse(authenticationManager.authenticate(authenticationToken));
+            return refreshTokenService.buildLoginResponse((MemberDetail) authenticationManager.authenticate(authenticationToken).getPrincipal());
         } catch (AuthenticationException e) {
             System.out.println("AuthenticationException : " + e.getMessage());
             throw new BaseException(BaseResponseStatus.NON_EXIST_USER);

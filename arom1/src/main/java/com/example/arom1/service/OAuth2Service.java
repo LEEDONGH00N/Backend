@@ -38,12 +38,15 @@ public class OAuth2Service implements OAuth2UserService<OAuth2UserRequest, OAuth
 
         String providerId = oAuth2UserInfo.getProviderId();
         String email = oAuth2UserInfo.getEmail();
-        String password = provider + "_" + email + "@" + providerId;
 
         // 이메일로 가입된 회원인지 조회, 없으면 임시 멤버 생성
         Member member = memberRepository.findByEmail(email)
                 .orElse(Member.builder()
-                        .email(email).password(password).role("ROLE_GUEST").provider(provider).build());
+                        .email(email).role("ROLE_GUEST").provider(provider).providerId(providerId).build());
+        //OAuth2 로 회원가입을 안한 유저는 어떻게 처리?
+        if (member.getProvider() == null) {
+            System.out.println("This is a local account. Need to add a provider : " + oAuth2UserInfo.getProvider());
+        }
 
         // 권한, 회원속성, 속성이름, Member 객체로 CustomOAuth2User 객체 반환
         return new CustomOAuth2User(Collections.singleton(new SimpleGrantedAuthority(member.getRole())),

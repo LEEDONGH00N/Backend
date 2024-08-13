@@ -31,18 +31,21 @@ import java.util.List;
 public class MemberController {
     private final MemberService memberService;
     private final RefreshTokenService refreshTokenService;
-
+    // OAuth2 로그인 시 최초 로그인인 경우 회원가입 진행, 필요한 정보를 쿼리 파라미터로 받는다
+    // /oauth2/authorization/kakao
     @GetMapping("/oauth2/signup")
     public BaseResponse<SignupResponse> oauth2Signup(@RequestParam String email,
                                                      @RequestParam String socialType,
                                                      @RequestParam String socialId) {
+        //추가정보 입력 폼? 반환?
         return new BaseResponse<>(
                 SignupResponse.builder()
                 .email(email)
-                .password(socialId)
+                .password(socialType + "_" + email + "@" + socialId)
                 .build()
         );
     }
+
     @PostMapping("/signup")
     public BaseResponse<SignupResponse> signup(@Valid @RequestBody SignupRequest request, BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
@@ -88,15 +91,6 @@ public class MemberController {
             return new BaseResponse<>(BaseResponseStatus.FAIL_TOKEN_AUTHORIZATION);
         }
 
-    }
-
-    // OAuth2 로그인 시 최초 로그인인 경우 회원가입 진행, 필요한 정보를 쿼리 파라미터로 받는다
-    @GetMapping("/oauth2/signup")
-    public String loadOAuthSignUp(@RequestParam String email, @RequestParam String socialType, @RequestParam String socialId, Model model) {
-        model.addAttribute("email", email);
-        model.addAttribute("socialType", socialType);
-        model.addAttribute("socialId", socialId);
-        return "/signup";
     }
 
     //나중에 손보기
