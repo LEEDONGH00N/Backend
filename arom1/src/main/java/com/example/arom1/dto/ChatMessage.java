@@ -11,7 +11,7 @@ public class ChatMessage {
 
     private MessageType messageType;
     private String sender;
-    private String chatroomId;
+    private long chatroomId;
     private String message;
 
     public enum MessageType{

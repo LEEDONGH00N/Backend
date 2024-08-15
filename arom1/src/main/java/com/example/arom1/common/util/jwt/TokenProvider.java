@@ -84,7 +84,7 @@ public class TokenProvider {
     }
 
     //parseClaimsJws 메서드가 exception 던짐
-    private Claims getClaims(String token) {
+    public Claims getClaims(String token) {
         try {
             return Jwts.parser()
                     .setSigningKey(jwtProperties.getSecretKey())
@@ -104,4 +104,17 @@ public class TokenProvider {
         }
         return null;
     }
+
+    // JWT 토큰 추출
+    public String extractJwt(String authorizationHeader) {
+        // Authorization 헤더 값이 "Bearer <token>" 형식일 때
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            // "Bearer " 접두사 제거하고 토큰 추출
+            return authorizationHeader.substring(7);
+        }
+        // 토큰이 없거나 형식이 올바르지 않을 때 null 반환
+        return null;
+    }
+
+
 }
