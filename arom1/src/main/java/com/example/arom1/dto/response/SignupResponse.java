@@ -14,10 +14,10 @@ public class SignupResponse {
     private String introduction;
     private int age;
     private String nickname;
-
+    private Member.Gender gender;
 
     @Builder
-    private SignupResponse(Long id, String email, String password, String name, String introduction, int age, String nickname) {
+    private SignupResponse(Long id, String email, String password, String name, String introduction, int age, String nickname, Member.Gender gender) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -25,6 +25,7 @@ public class SignupResponse {
         this.introduction = introduction;
         this.age = age;
         this.nickname = nickname;
+        this.gender = gender;
     }
 
     public static SignupResponse of(Member member) {
@@ -36,6 +37,7 @@ public class SignupResponse {
                 .introduction(member.getIntroduction())
                 .age(member.getAge())
                 .nickname(member.getNickname())
+                .gender(member.getGender())
 
                 .build();
     }

@@ -27,7 +27,7 @@ public class MemberSecurityContext {
                 .name(member.getName())
                 .email(member.getEmail())
                 .password(member.getPassword())
-                .role("MEMBER")
+                .role(member.getRole())
                 .build();
     }
 

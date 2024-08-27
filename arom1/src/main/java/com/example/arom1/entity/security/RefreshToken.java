@@ -1,14 +1,12 @@
 package com.example.arom1.entity.security;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
 @Entity
+@Table(name = "refreshToken")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RefreshToken {
 

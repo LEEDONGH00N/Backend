@@ -32,7 +32,7 @@ public class AmazonS3Util {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    private final String DIR_NAME = "images";
+    private final String DIRECTORY_NAME = "images";
 
     public String uploadFile(MultipartFile file) throws IOException {
         //private 메서드 convert
@@ -43,7 +43,7 @@ public class AmazonS3Util {
         String filename = file.getOriginalFilename();
         String extension = filename.substring(filename.lastIndexOf("."));
 
-       return putS3(uploadFile, DIR_NAME + "/" + uuid + extension);
+       return putS3(uploadFile, DIRECTORY_NAME + "/" + uuid + extension);
     }
     private Optional<File> convert(MultipartFile file) throws IOException {
         log.info(file.getOriginalFilename());
@@ -75,18 +75,18 @@ public class AmazonS3Util {
     //파일 삭제
     //파일 삭제시 키값은 모든 경로를 포함하여야 함...
     public void deleteFile(String key){
-        amazonS3.deleteObject(new DeleteObjectRequest(bucket, DIR_NAME + "/" + key));
+        amazonS3.deleteObject(new DeleteObjectRequest(bucket, DIRECTORY_NAME + "/" + key));
     }
 
     //URL 반환
     public String getUrl(String filename) {
-        return amazonS3.getUrl(bucket, DIR_NAME + "/" + filename).toString();
+        return amazonS3.getUrl(bucket, DIRECTORY_NAME + "/" + filename).toString();
     }
 
 
     //파일 다운로드
     public ResponseEntity<byte[]> download(String filename) throws IOException {
-        S3Object awsS3Object = amazonS3.getObject(new GetObjectRequest(bucket, DIR_NAME + "/" + filename));
+        S3Object awsS3Object = amazonS3.getObject(new GetObjectRequest(bucket, DIRECTORY_NAME + "/" + filename));
         S3ObjectInputStream s3is = awsS3Object.getObjectContent();
         byte[] bytes = s3is.readAllBytes();
 
